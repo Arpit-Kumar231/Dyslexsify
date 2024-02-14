@@ -9,6 +9,7 @@ const Textarea = () => {
   const HandleSubmit = (e) => {
     e.preventDefault();
   };
+
   return (
     <div className="mb-2">
       <form onSubmit={HandleSubmit} className="flex flex-row gap-1 ">
