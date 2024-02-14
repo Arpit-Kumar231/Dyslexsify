@@ -17,7 +17,7 @@ const Extension = () => {
   const [text, setText] = useState(null);
   const [previousChats, setPreviousChats] = useState();
   const [currentTitle, setCurrentTitle] = useState([]);
-  const { speech } = useSpeechSynthesis();
+  const { speak } = useSpeechSynthesis();
   const HandleSubmit = (e) => {
     e.preventDefault();
   };
@@ -50,8 +50,9 @@ const Extension = () => {
 
     getMessages();
   }, [Query]);
-
-  if (message != null) speech({ text: message.content });
+  useEffect(() => {
+    if (message != null) speak({ text: message.content });
+  }, [message]);
 
   useEffect(() => {
     console.log(currentTitle, Query, message);
