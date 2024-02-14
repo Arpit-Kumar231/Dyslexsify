@@ -20,6 +20,7 @@ const Extension = () => {
   const { speak } = useSpeechSynthesis();
   const HandleSubmit = (e) => {
     e.preventDefault();
+    setText("");
   };
   const HandleClick = () => {
     setQuery(text);
