@@ -11,7 +11,7 @@ const Navbar = () => {
               NEW!
             </span>
             <span className="border-b-2 border-indigo-600 mb-2 pb-1">
-              <span className="mr-2 text-indigo-700 font-Hanken">
+              <span className="mr-2 text-indigo-400 font-Hanken">
                 Dyslexify Ai
               </span>
               <span className="font-Hanken">extension</span>
