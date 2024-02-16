@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+//@ts-nocheck
 import Header from "./Header";
-import Textarea from "./Textarea";
-import Image from "../assests/dyslexify.png";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,21 +11,27 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image1 from "../assests/dyslexify.png";
 import { useSpeechSynthesis } from "react-speech-kit";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const Extension = () => {
-  const [Query, setQuery] = useState(null);
+  const [Query, setQuery] = useState("Hello Dyslexify");
   const [message, setMessage] = useState(null);
-  const [text, setText] = useState(null);
-  const [previousChats, setPreviousChats] = useState();
+  const [text, setText] = useState("");
+  const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
   const { speak } = useSpeechSynthesis();
-  const HandleSubmit = (e) => {
-    e.preventDefault();
-    setText("");
-  };
-  const HandleClick = () => {
-    setQuery(text);
-  };
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+  useEffect(() => {
+    setText(transcript);
+  }, [transcript]);
   useEffect(() => {
     const getMessages = async () => {
       const options = {
@@ -52,45 +59,51 @@ const Extension = () => {
     getMessages();
   }, [Query]);
   useEffect(() => {
+    if (message != null) {
+      setChats([
+        ...Chats,
+        { role: "user", content: Query },
+        { role: message.role, content: message.content },
+      ]);
+    }
+  }, [message]);
+  useEffect(() => {
     if (message != null) speak({ text: message.content });
   }, [message]);
 
-  useEffect(() => {
-    console.log(currentTitle, Query, message);
-    if (!currentTitle && Query && message) {
-      setCurrentTitle(Query);
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
+
+  const toggleListening = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+      resetTranscript(); // Optional: You can choose to reset the transcript or not after stopping.
+    } else {
+      SpeechRecognition.startListening({ continuous: true });
     }
-    if (!currentTitle && Query && message) {
-      setPreviousChats((prevChats) => {
-        [
-          ...prevChats,
-          {
-            title: currentTitle,
-            role: "user",
-            content: Query,
-          },
-          {
-            title: currentTitle,
-            role: message.role,
-            content: message.content,
-          },
-        ];
-      });
-    }
-  }, [message, currentTitle]);
-  console.log(previousChats);
+  };
+
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const HandleClick = () => {
+    setQuery(text);
+  };
+  console.log(Chats);
 
   return (
     <div className="flex flex-col">
       <Header />
       <ScrollArea className="w-[450px] ml-4 bg-black h-[700px]">
+        <ul></ul>
         {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p className="font-Hanken text-white">{Query}</p>
+            <p className="font-Hanken text-white ml-2">{Query}</p>
           </div>
         )}
         {message && (
@@ -113,14 +126,20 @@ const Extension = () => {
                   setText(e.target.value);
                 }}
               />
-              <Button size="icon" className="w-10 h-10 rounded-full bg-white">
+              <Button
+                size="icon"
+                variant="secondary"
+                className="w-10 h-10 rounded-full bg-white"
+                onClick={toggleListening}
+              >
                 <FaMicrophone />
               </Button>
             </div>
 
             <Button
               size="icon"
-              className="w-10 h-10 rounded-full bg-white"
+              variant="secondary"
+              className="w-10 h-10 rounded-full bg-[white]"
               onClick={HandleClick}
             >
               <IoIosSend />
