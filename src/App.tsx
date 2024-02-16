@@ -4,7 +4,7 @@ import Extension from "./components/extension";
 
 const App = () => {
   return (
-    <div className="rounded-md">
+    <div className="rounded-xl">
       <Navbar />
       <Extension />
     </div>

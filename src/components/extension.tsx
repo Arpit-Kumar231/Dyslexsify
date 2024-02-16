@@ -22,6 +22,9 @@ const Extension = () => {
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
   const { speak } = useSpeechSynthesis();
+  useEffect(() => {
+    setChats([]);
+  }, []);
 
   const {
     transcript,
@@ -96,8 +99,32 @@ const Extension = () => {
     <div className="flex flex-col">
       <Header />
       <ScrollArea className="w-[450px] ml-4 bg-black h-[700px]">
-        <ul></ul>
-        {Query && (
+        <ul>
+          {Chats?.map((item, index) => {
+            return item.role === "user" ? (
+              <li
+                className="flex flex-row gap-4 px-4 mt-2 items-center bg-black mx-2 rounded-xl mb-4 "
+                key={index}
+              >
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <p className="font-Hanken text-white ml-2">{item.content}</p>
+              </li>
+            ) : (
+              <li
+                className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4"
+                key={index}
+              >
+                <img src={Image1} alt="" className="w-12 h-12 object-contain" />
+                <p className="font-Kelly text-white">{item.content}</p>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -111,7 +138,7 @@ const Extension = () => {
             <img src={Image1} alt="" className="w-12 h-12 object-contain" />
             <p className="font-Kelly text-white">{message.content}</p>
           </div>
-        )}
+        )} */}
       </ScrollArea>
       <div className="w-[450px] ml-4 bg-black p-1  flex items-end ">
         <div className="mb-2">
