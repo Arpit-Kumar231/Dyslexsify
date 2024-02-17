@@ -1,5 +1,6 @@
 import { GiAcid } from "react-icons/gi";
 import { TfiLayoutGrid3Alt } from "react-icons/tfi";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   return (
@@ -26,12 +27,16 @@ const Navbar = () => {
           </li>
           <li className="mb-3 ">
             <div className="flex h-9 w-9 rounded-full overflow-hidden">
-              <img
+              {/* <img
                 className="h-full w-full object-cover"
                 src={
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU"
                 }
-              />
+              /> */}
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             </div>
           </li>
         </ul>

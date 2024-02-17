@@ -6,7 +6,9 @@ const App = () => {
   return (
     <div className="rounded-xl">
       <Navbar />
-      <Extension />
+      <div className="h-[900px] bg-indigo-600 flex justify-end">
+        <Extension />
+      </div>
     </div>
   );
 };

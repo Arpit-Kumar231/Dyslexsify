@@ -96,7 +96,7 @@ const Extension = () => {
   console.log(Chats);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mr-10">
       <Header />
       <ScrollArea className="w-[450px] ml-4 bg-black h-[700px]">
         <ul>
@@ -140,10 +140,10 @@ const Extension = () => {
           </div>
         )} */}
       </ScrollArea>
-      <div className="w-[450px] ml-4 bg-black p-1  flex items-end ">
+      <div className="w-[450px] ml-4 bg-black p-1  flex items-end rounded-b-[10px] ">
         <div className="mb-2">
           <form onSubmit={HandleSubmit} className="flex flex-row gap-1 ">
-            <div className="bg-white flex gap-1 rounded-xl">
+            <div className="bg-white flex gap-1 rounded-xl ml-1">
               <Input
                 type="text"
                 placeholder="Enter your Text Here"
