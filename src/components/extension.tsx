@@ -9,11 +9,11 @@ import { IoIosSend } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Image1 from "../assests/dyslexify.png";
+import Image1 from "../assests/dyslexi.png";
 import { useSpeechSynthesis } from "react-speech-kit";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+// import SpeechRecognition, {
+//   useSpeechRecognition,
+// } from "react-speech-recognition";
 
 const Extension = () => {
   const [Query, setQuery] = useState("Hello Dyslexify");
@@ -21,26 +21,29 @@ const Extension = () => {
   const [text, setText] = useState("");
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
+  const [service, setService] = useState("ChatGPT");
   const { speak } = useSpeechSynthesis();
   useEffect(() => {
     setChats([]);
   }, []);
 
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
-  useEffect(() => {
-    setText(transcript);
-  }, [transcript]);
+  // const {
+  //   transcript,
+  //   listening,
+  //   resetTranscript,
+  //   browserSupportsSpeechRecognition,
+  // } = useSpeechRecognition();
+  // useEffect(() => {
+  //   setText(transcript);
+  // }, [transcript]);
+  console.log(service);
   useEffect(() => {
     const getMessages = async () => {
       const options = {
         method: "POST",
         body: JSON.stringify({
-          message: Query, // You need to define Query before using it here
+          message: Query,
+          service: service, // You need to define Query before using it here
         }),
         headers: {
           "Content-Type": "application/json",
@@ -54,6 +57,7 @@ const Extension = () => {
         );
         const data = await response.json();
         setMessage(data.choices[0].message);
+        console.log(message);
       } catch (err) {
         console.error(err);
       }
@@ -74,31 +78,31 @@ const Extension = () => {
     if (message != null) speak({ text: message.content });
   }, [message]);
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
-  }
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
 
-  const toggleListening = () => {
-    if (listening) {
-      SpeechRecognition.stopListening();
-      resetTranscript(); // Optional: You can choose to reset the transcript or not after stopping.
-    } else {
-      SpeechRecognition.startListening({ continuous: true });
-    }
-  };
+  // const toggleListening = () => {
+  //   if (listening) {
+  //     SpeechRecognition.stopListening();
+  //     resetTranscript(); // Optional: You can choose to reset the transcript or not after stopping.
+  //   } else {
+  //     SpeechRecognition.startListening({ continuous: true });
+  //   }
+  // };
 
   const HandleSubmit = (e) => {
     e.preventDefault();
   };
   const HandleClick = () => {
     setQuery(text);
+    setText("");
   };
-  console.log(Chats);
 
   return (
-    <div className="flex flex-col mr-10">
-      <Header />
-      <ScrollArea className="w-[450px] ml-4 bg-black h-[700px]">
+    <div className="flex flex-col mr-10 ">
+      <Header service={service} setService={setService} />
+      <ScrollArea className="w-[450px]  bg-black h-[485px]">
         <ul>
           {Chats?.map((item, index) => {
             return item.role === "user" ? (
@@ -110,7 +114,9 @@ const Extension = () => {
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <p className="font-Hanken text-white ml-2">{item.content}</p>
+                <p className="font-ABeeZee text-base font-semibold text-white ml-2">
+                  {item.content}
+                </p>
               </li>
             ) : (
               <li
@@ -118,7 +124,9 @@ const Extension = () => {
                 key={index}
               >
                 <img src={Image1} alt="" className="w-12 h-12 object-contain" />
-                <p className="font-Kelly text-white">{item.content}</p>
+                <p className="font-sans text-base text-white font-semibold">
+                  {item.content}
+                </p>
               </li>
             );
           })}
@@ -140,7 +148,7 @@ const Extension = () => {
           </div>
         )} */}
       </ScrollArea>
-      <div className="w-[450px] ml-4 bg-black p-1  flex items-end rounded-b-[10px] ">
+      <div className="w-[450px]  bg-black p-1  flex items-end  ">
         <div className="mb-2">
           <form onSubmit={HandleSubmit} className="flex flex-row gap-1 ">
             <div className="bg-white flex gap-1 rounded-xl ml-1">
@@ -157,7 +165,7 @@ const Extension = () => {
                 size="icon"
                 variant="secondary"
                 className="w-10 h-10 rounded-full bg-white"
-                onClick={toggleListening}
+                // onClick={toggleListening}
               >
                 <FaMicrophone />
               </Button>
@@ -166,7 +174,7 @@ const Extension = () => {
             <Button
               size="icon"
               variant="secondary"
-              className="w-10 h-10 rounded-full bg-[white]"
+              className="w-10 h-10 rounded-full bg-[white] hover:bg-slate-100"
               onClick={HandleClick}
             >
               <IoIosSend />

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Dyslexify Ai",
+  "version": "1.0.0",
+  "description": "A basic example extension with only required keys",
+  "icons": {
+    "48": "assets/dyslexi-DJAcG6d0.png",
+    "128": "assets/dyslexi-DJAcG6d0.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/dyslexi-DJAcG6d0.png",
+      "24": "assets/dyslexi-DJAcG6d0.png",
+      "32": "assets/dyslexi-DJAcG6d0.png"
+    },
+    "default_title": "Click Me",
+    "default_popup": "index.html"
+  }
+}
