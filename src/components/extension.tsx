@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 //@ts-nocheck
 import Header from "./Header";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -16,13 +17,16 @@ import { useSpeechSynthesis } from "react-speech-kit";
 // } from "react-speech-recognition";
 
 const Extension = () => {
-  const [Query, setQuery] = useState("Hello Dyslexify");
+  const [Query, setQuery] = useState("Hi");
   const [message, setMessage] = useState(null);
   const [text, setText] = useState("");
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
-  const [service, setService] = useState("ChatGPT");
+  const [service, setService] = useState("Mistral");
   const { speak } = useSpeechSynthesis();
+  const [Image, setImage] = useState("");
+  const [Loading, setLoading] = useState(false);
+  const [ImageQuery, setImageQuery] = useState("");
   useEffect(() => {
     setChats([]);
   }, []);
@@ -36,7 +40,7 @@ const Extension = () => {
   // useEffect(() => {
   //   setText(transcript);
   // }, [transcript]);
-  console.log(service);
+
   useEffect(() => {
     const getMessages = async () => {
       const options = {
@@ -49,17 +53,41 @@ const Extension = () => {
           "Content-Type": "application/json",
         },
       };
+      if (service === "DALL-E") {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            "http://localhost:8000/completions",
+            options
+          );
 
-      try {
-        const response = await fetch(
-          "http://localhost:8000/completions",
-          options
-        );
-        const data = await response.json();
-        setMessage(data.choices[0].message);
-        console.log(message);
-      } catch (err) {
-        console.error(err);
+          const data = await response.json();
+          setLoading(false);
+          setImage(data.data[0].url);
+
+          console.log(data);
+
+          console.log(message);
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            "http://localhost:8000/completions",
+            options
+          );
+          const data = await response.json();
+          setLoading(false);
+          setMessage(data.choices[0].message);
+
+          console.log(data);
+
+          console.log(message);
+        } catch (err) {
+          console.error(err);
+        }
       }
     };
 
@@ -96,12 +124,17 @@ const Extension = () => {
   };
   const HandleClick = () => {
     setQuery(text);
+    if (service === "DALL-E") {
+      setImageQuery(text);
+    }
     setText("");
   };
+  console.log(Image);
 
   return (
     <div className="flex flex-col mr-10 ">
       <Header service={service} setService={setService} />
+
       <ScrollArea className="w-[450px]  bg-black h-[485px]">
         <ul>
           {Chats?.map((item, index) => {
@@ -131,6 +164,43 @@ const Extension = () => {
             );
           })}
         </ul>
+
+        {service === "DALL-E" && ImageQuery && Image ? (
+          // <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4 w-[435px]">
+          //   <div className="items-center">
+          //     <div className="flex flex-row items-center">
+          //       <img
+          //         src={Image1}
+          //         alt=""
+          //         className="w-12 h-12 object-contain m-2"
+          //       />
+          //       <p className="font-sans text-base text-white font-semibold m-2">
+          //         {ImageQuery}
+          //       </p>
+          //     </div>
+          //     <img src={Image} className="rounded-lg m-2 w-[400px]" />
+          //   </div>
+          // </div>
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4">
+              <img src={Image1} alt="" className="w-12 h-12 object-contain" />
+              <p className="font-sans text-base text-white font-semibold">
+                {ImageQuery}
+              </p>
+            </div>
+            <div className="flex flex-row gap-4 px-4 mt-2  mx-2 rounded-xl mb-4">
+              <img
+                src={Image1}
+                alt=""
+                className="w-12 h-12 object-contain mt-1"
+              />
+
+              <img src={Image} className="rounded-lg m-2 w-[300px]" />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
 
         {/* {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
