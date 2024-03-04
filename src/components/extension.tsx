@@ -72,8 +72,8 @@ const Extension = () => {
           console.error(err);
         }
       } else {
+        setLoading(true);
         try {
-          setLoading(true);
           const response = await fetch(
             "http://localhost:8000/completions",
             options
@@ -129,66 +129,56 @@ const Extension = () => {
     }
     setText("");
   };
-  console.log(Image);
+  console.log(Loading);
 
   return (
     <div className="flex flex-col mr-10 ">
       <Header service={service} setService={setService} />
 
-      <ScrollArea className="w-[450px]  bg-black h-[485px]">
-        <ul>
-          {Chats?.map((item, index) => {
-            return item.role === "user" ? (
-              <li
-                className="flex flex-row gap-4 px-4 mt-2 items-center bg-black mx-2 rounded-xl mb-4 "
-                key={index}
-              >
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <p className="font-ABeeZee text-base font-semibold text-white ml-2">
-                  {item.content}
-                </p>
-              </li>
-            ) : (
-              <li
-                className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4"
-                key={index}
-              >
-                <img src={Image1} alt="" className="w-12 h-12 object-contain" />
-                <p className="font-sans text-base text-white font-semibold">
-                  {item.content}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+      <ScrollArea className="w-[450px]  bg-card h-[485px] ">
+        {Loading ? (
+          <p className="text-card-foreground text-center font-semibold text-xl mt-6">
+            Getting you content as fast as possible...
+          </p>
+        ) : (
+          <ul>
+            {Chats?.map((item, index) => {
+              return item.role === "user" ? (
+                <li
+                  className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-16 min-h-12"
+                  key={index}
+                >
+                  <p className="font-ABeeZee text-base font-semibold text-primary-foreground ">
+                    {item.content}
+                  </p>
+                </li>
+              ) : (
+                <li
+                  className="flex flex-row gap-4 px-4 mt-2 items-center bg-secondary mx-2 rounded-xl mb-4 mr-16"
+                  key={index}
+                >
+                  <img
+                    src={Image1}
+                    alt=""
+                    className="w-12 h-12 object-contain"
+                  />
+                  <p className="font-sans text-base text-secondary-foreground font-semibold">
+                    {item.content}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        )}
 
         {service === "DALL-E" && ImageQuery && Image ? (
-          // <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4 w-[435px]">
-          //   <div className="items-center">
-          //     <div className="flex flex-row items-center">
-          //       <img
-          //         src={Image1}
-          //         alt=""
-          //         className="w-12 h-12 object-contain m-2"
-          //       />
-          //       <p className="font-sans text-base text-white font-semibold m-2">
-          //         {ImageQuery}
-          //       </p>
-          //     </div>
-          //     <img src={Image} className="rounded-lg m-2 w-[400px]" />
-          //   </div>
-          // </div>
           <div className="flex flex-col gap-1">
-            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-slate-700 mx-2 rounded-xl mb-4">
-              <img src={Image1} alt="" className="w-12 h-12 object-contain" />
-              <p className="font-sans text-base text-white font-semibold">
+            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-16 min-h-12">
+              <p className="font-sans text-base text-primary-foreground font-semibold ">
                 {ImageQuery}
               </p>
             </div>
-            <div className="flex flex-row gap-4 px-4 mt-2  mx-2 rounded-xl mb-4">
+            <div className="flex flex-row gap-4 px-4 mt-2  mx-2 rounded-xl mb-4 mr-12 bg-secondary">
               <img
                 src={Image1}
                 alt=""
@@ -218,14 +208,14 @@ const Extension = () => {
           </div>
         )} */}
       </ScrollArea>
-      <div className="w-[450px]  bg-black p-1  flex items-end  ">
+      <div className="w-[450px]  bg-card p-1  flex items-end  ">
         <div className="mb-2">
           <form onSubmit={HandleSubmit} className="flex flex-row gap-1 ">
-            <div className="bg-white flex gap-1 rounded-xl ml-1">
+            <div className="bg-card flex gap-1 rounded-xl ml-1">
               <Input
                 type="text"
                 placeholder="Enter your Text Here"
-                className="rounded-2xl border-0 bg-white w-[350px] font-Hanken "
+                className="rounded-2xl border-2 bg-card text-card-foreground w-[350px] font-Hanken "
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
@@ -234,20 +224,20 @@ const Extension = () => {
               <Button
                 size="icon"
                 variant="secondary"
-                className="w-10 h-10 rounded-full bg-white"
+                className="w-10 h-10 rounded-full border-primary bg-card hover:border-2"
                 // onClick={toggleListening}
               >
-                <FaMicrophone />
+                <FaMicrophone className="text-card-foreground" />
               </Button>
             </div>
 
             <Button
               size="icon"
               variant="secondary"
-              className="w-10 h-10 rounded-full bg-[white] hover:bg-slate-100"
+              className="w-10 h-10 rounded-full border-primary bg-card hover:border-2 "
               onClick={HandleClick}
             >
-              <IoIosSend />
+              <IoIosSend className="text-card-foreground" />
             </Button>
           </form>
         </div>

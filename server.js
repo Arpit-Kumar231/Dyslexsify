@@ -24,7 +24,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} summarize and simplify under 40 words`,
+            content: `${req.body.message} simplify`,
           },
         ],
         max_tokens: 500,
@@ -82,7 +82,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} summarize and simplify under 40 words`,
+            content: `${req.body.message} `,
           },
         ],
         max_tokens: 500,
@@ -111,7 +111,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} summarize and simplify under 40 words`,
+            content: `${req.body.message} `,
           },
         ],
         max_tokens: 500,
