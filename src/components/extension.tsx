@@ -137,9 +137,13 @@ const Extension = () => {
 
       <ScrollArea className="w-[450px]  bg-card h-[485px] ">
         {Loading ? (
-          <p className="text-card-foreground text-center font-semibold text-xl mt-6">
-            Getting you content as fast as possible...
-          </p>
+          <div className="flex items-center space-x-4 mt-5 ml-6">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
         ) : (
           <ul>
             {Chats?.map((item, index) => {
