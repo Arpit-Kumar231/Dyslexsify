@@ -177,19 +177,22 @@ const Extension = () => {
 
         {service === "DALL-E" && ImageQuery && Image && !Loading ? (
           <div className="flex flex-col gap-1">
-            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-16 min-h-12">
+            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] mr-2 min-h-12">
               <p className="font-sans text-base text-primary-foreground font-semibold ">
                 {ImageQuery}
               </p>
             </div>
-            <div className="flex flex-row gap-4 px-4 mt-2  mx-2 rounded-xl mb-4 mr-12 bg-secondary">
+            <div className="flex flex-row gap-2 px-4 mt-2   rounded-xl mb-4 mr-12 ">
               <img
                 src={Image1}
                 alt=""
                 className="w-12 h-12 object-contain mt-1"
               />
 
-              <img src={Image} className="rounded-lg m-2 w-[300px]" />
+              <img
+                src={Image}
+                className="m-2 w-[300px] bg-secondary rounded-xl"
+              />
             </div>
           </div>
         ) : (
