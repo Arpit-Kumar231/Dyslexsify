@@ -149,7 +149,7 @@ const Extension = () => {
             {Chats?.map((item, index) => {
               return item.role === "user" ? (
                 <li
-                  className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-16 min-h-12"
+                  className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] min-h-12 mr-2"
                   key={index}
                 >
                   <p className="font-ABeeZee text-base font-semibold text-primary-foreground ">
@@ -158,15 +158,15 @@ const Extension = () => {
                 </li>
               ) : (
                 <li
-                  className="flex flex-row gap-4 px-4 mt-2 items-center bg-secondary mx-2 rounded-xl mb-4 mr-16"
+                  className="flex flex-row gap-2 px-4 mt-2 items-start   rounded-xl mb-4 mr-16"
                   key={index}
                 >
                   <img
                     src={Image1}
                     alt=""
-                    className="w-12 h-12 object-contain"
+                    className="w-12 h-12 object-contain "
                   />
-                  <p className="font-sans text-base text-secondary-foreground font-semibold">
+                  <p className="font-sans text-base text-secondary-foreground rounded-xl p-2 font-semibold bg-secondary">
                     {item.content}
                   </p>
                 </li>
@@ -175,7 +175,7 @@ const Extension = () => {
           </ul>
         )}
 
-        {service === "DALL-E" && ImageQuery && Image ? (
+        {service === "DALL-E" && ImageQuery && Image && !Loading ? (
           <div className="flex flex-col gap-1">
             <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-16 min-h-12">
               <p className="font-sans text-base text-primary-foreground font-semibold ">
