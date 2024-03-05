@@ -18,7 +18,10 @@ const Header = ({ service, setService }) => {
           <option value="ChatGPT">ChatGPT</option>
           <option value="Mistral">Mistral</option>
           <option value="Gemma">Gemma</option>
+          <option value="openhermes-2-5-m7b-4k">openhermes-2-5-m7b-4k</option>
+          <option value="Code-Llama">Code-Llama</option>
           <option value="DALL-E">DALL-E</option>
+          <option value="stable-diffusion">stable-diffusion</option>
         </select>
       </div>
       <Avatar>

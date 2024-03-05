@@ -53,7 +53,7 @@ const Extension = () => {
           "Content-Type": "application/json",
         },
       };
-      if (service === "DALL-E") {
+      if (service === "DALL-E" || service === "stable-diffusion") {
         try {
           setLoading(true);
           const response = await fetch(
@@ -124,7 +124,7 @@ const Extension = () => {
   };
   const HandleClick = () => {
     setQuery(text);
-    if (service === "DALL-E") {
+    if (service === "DALL-E" || service === "stable-diffusion") {
       setImageQuery(text);
     }
     setText("");
