@@ -11,7 +11,8 @@ import { FaMicrophone } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image1 from "../assests/dyslexi.png";
-import { useSpeechSynthesis } from "react-speech-kit";
+import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
+
 // import SpeechRecognition, {
 //   useSpeechRecognition,
 // } from "react-speech-recognition";
@@ -23,10 +24,16 @@ const Extension = () => {
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
   const [service, setService] = useState("Mistral");
-  const { speak } = useSpeechSynthesis();
+  const { speak, cancel } = useSpeechSynthesis();
   const [Image, setImage] = useState("");
   const [Loading, setLoading] = useState(false);
   const [ImageQuery, setImageQuery] = useState("");
+  const { listen, listening, stop } = useSpeechRecognition({
+    onResult: (result) => {
+      setText(result);
+    },
+  });
+
   useEffect(() => {
     setChats([]);
   }, []);
@@ -112,10 +119,9 @@ const Extension = () => {
 
   // const toggleListening = () => {
   //   if (listening) {
-  //     SpeechRecognition.stopListening();
-  //     resetTranscript(); // Optional: You can choose to reset the transcript or not after stopping.
+  //     stop();
   //   } else {
-  //     SpeechRecognition.startListening({ continuous: true });
+  //     listen();
   //   }
   // };
 
@@ -198,6 +204,14 @@ const Extension = () => {
         ) : (
           ""
         )}
+        {!Loading && (
+          <Button
+            onClick={cancel}
+            className="rounded-xl ml-[180px] mt-4 bg-secondary"
+          >
+            Stop ⛔
+          </Button>
+        )}
 
         {/* {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
@@ -232,7 +246,8 @@ const Extension = () => {
                 size="icon"
                 variant="secondary"
                 className="w-10 h-10 rounded-full border-primary bg-card hover:border-2"
-                // onClick={toggleListening}
+                onMouseDown={listen}
+                onMouseUp={stop}
               >
                 <FaMicrophone className="text-card-foreground" />
               </Button>
