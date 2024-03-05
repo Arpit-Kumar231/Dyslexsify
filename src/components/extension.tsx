@@ -31,6 +31,7 @@ const Extension = () => {
   const { listen, listening, stop } = useSpeechRecognition({
     onResult: (result) => {
       setText(result);
+      console.log(result);
     },
   });
 
@@ -135,7 +136,7 @@ const Extension = () => {
     }
     setText("");
   };
-  console.log(Loading);
+  console.log(listen, listening);
 
   return (
     <div className="flex flex-col mr-10 ">
@@ -207,9 +208,9 @@ const Extension = () => {
         {!Loading && (
           <Button
             onClick={cancel}
-            className="rounded-xl ml-[180px] mt-4 bg-secondary"
+            className="rounded-xl ml-[175px] mt-4 bg-secondary sticky hover:border-primary border-2"
           >
-            Stop ⛔
+            Stop Voice⛔
           </Button>
         )}
 
@@ -229,6 +230,7 @@ const Extension = () => {
           </div>
         )} */}
       </ScrollArea>
+
       <div className="w-[450px]  bg-card p-1  flex items-end  ">
         <div className="mb-2">
           <form onSubmit={HandleSubmit} className="flex flex-row gap-1 ">
@@ -246,8 +248,7 @@ const Extension = () => {
                 size="icon"
                 variant="secondary"
                 className="w-10 h-10 rounded-full border-primary bg-card hover:border-2"
-                onMouseDown={listen}
-                onMouseUp={stop}
+                onClick={listen}
               >
                 <FaMicrophone className="text-card-foreground" />
               </Button>
