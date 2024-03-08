@@ -24,11 +24,17 @@ const Extension = () => {
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
   const [service, setService] = useState("Mistral");
-  const { speak, cancel } = useSpeechSynthesis();
+  const { speak, cancel, voices } = useSpeechSynthesis();
   const [Image, setImage] = useState("");
   const [Loading, setLoading] = useState(false);
   const [ImageQuery, setImageQuery] = useState("");
-  const { listen, listening, stop } = useSpeechRecognition({
+  const [isListening, setIsListening] = useState(false);
+  const [sound, setSound] = useState(false);
+  const [baseUrl, setbaseUrl] = useState("");
+  const [ImageChats, setImageChats] = useState([]);
+  const [type, setType] = useState(2);
+
+  const { listen, listening, stop, onResult } = useSpeechRecognition({
     onResult: (result) => {
       setText(result);
       console.log(result);
@@ -38,6 +44,11 @@ const Extension = () => {
   useEffect(() => {
     setChats([]);
   }, []);
+
+  useEffect(() => {
+    listen();
+    return stop;
+  }, [listen, stop]);
 
   // const {
   //   transcript,
@@ -61,7 +72,7 @@ const Extension = () => {
           "Content-Type": "application/json",
         },
       };
-      if (service === "DALL-E" || service === "stable-diffusion") {
+      if (service === "DALL-E") {
         try {
           setLoading(true);
           const response = await fetch(
@@ -74,6 +85,25 @@ const Extension = () => {
           setImage(data.data[0].url);
 
           console.log(data);
+
+          console.log(message);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      if (service === "stable-diffusion") {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            "http://localhost:8000/completions",
+            options
+          );
+
+          const data = await response.json();
+          setLoading(false);
+          setbaseUrl(data[0]);
+
+          console.log(data[0]);
 
           console.log(message);
         } catch (err) {
@@ -105,25 +135,45 @@ const Extension = () => {
     if (message != null) {
       setChats([
         ...Chats,
-        { role: "user", content: Query },
-        { role: message.role, content: message.content },
+        { type: "chat", role: "user", content: Query },
+        { type: "chat", role: message.role, content: message.content },
       ]);
     }
   }, [message]);
   useEffect(() => {
-    if (message != null) speak({ text: message.content });
+    if (
+      service === "DALL-E" ||
+      (service === "stable-diffusion" && (Image != null || baseUrl != null))
+    ) {
+      setChats([
+        ...Chats,
+        { type: "image", role: "user", content: ImageQuery },
+        {
+          type: "image",
+          role: "answer",
+          content: service === "DALL-E" ? Image : baseUrl,
+        },
+      ]);
+    }
+  }, [Image, baseUrl]);
+  useEffect(() => {
+    const selectedVoice = voices[type];
+    if (message != null) speak({ text: message.content, voice: selectedVoice });
   }, [message]);
 
   // if (!browserSupportsSpeechRecognition) {
   //   return <span>Browser doesn't support speech recognition.</span>;
   // }
 
+  const toggleListening = () => {
+    if (listening) {
+      stop();
+    } else {
+      listen();
+    }
+  };
   // const toggleListening = () => {
-  //   if (listening) {
-  //     stop();
-  //   } else {
-  //     listen();
-  //   }
+  //   setIsListening((prevState) => !prevState);
   // };
 
   const HandleSubmit = (e) => {
@@ -140,10 +190,73 @@ const Extension = () => {
 
   return (
     <div className="flex flex-col mr-10 ">
-      <Header service={service} setService={setService} />
+      <Header
+        service={service}
+        setService={setService}
+        type={type}
+        setType={setType}
+        speak={speak}
+        voices={voices}
+      />
 
       <ScrollArea className="w-[450px]  bg-card h-[485px] ">
+        {/* {Loading ? (
+          <div className="flex items-center space-x-4 mt-5 ml-6">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+        ) : ( */}
+        <ul>
+          {Chats?.map((item, index) => {
+            return item.role === "user" ? (
+              <li
+                className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] min-h-12 mr-2"
+                key={index}
+              >
+                <p className="font-ABeeZee text-base font-semibold text-primary-foreground ">
+                  {item.content}
+                </p>
+              </li>
+            ) : (
+              <li
+                className="flex flex-row gap-2 px-[14px] mt-2 items-start   rounded-xl mb-4 mr-16"
+                key={index}
+              >
+                <img
+                  src={Image1}
+                  alt=""
+                  className="w-12 h-12 object-contain "
+                />
+                {item.type === "chat" ? (
+                  <p className="font-sans text-base text-secondary-foreground rounded-xl p-2 font-semibold bg-secondary">
+                    {item.content}
+                  </p>
+                ) : (
+                  <img
+                    src={item.content}
+                    className="m-2 w-[300px] bg-secondary rounded-xl"
+                  />
+                )}
+              </li>
+            );
+          })}
+        </ul>
         {Loading ? (
+          <div className="flex items-center space-x-4 mt-5 ml-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {/* )} */}
+        {/* {Loading ? (
           <div className="flex items-center space-x-4 mt-5 ml-6">
             <Skeleton className="h-12 w-12 rounded-full" />
             <div className="space-y-2">
@@ -153,36 +266,37 @@ const Extension = () => {
           </div>
         ) : (
           <ul>
-            {Chats?.map((item, index) => {
+            {ImageChats?.map((item, index) => {
               return item.role === "user" ? (
                 <li
                   className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] min-h-12 mr-2"
                   key={index}
                 >
-                  <p className="font-ABeeZee text-base font-semibold text-primary-foreground ">
+                  <p className="font-sans text-base text-primary-foreground font-semibold ">
                     {item.content}
                   </p>
                 </li>
               ) : (
-                <li
-                  className="flex flex-row gap-2 px-4 mt-2 items-start   rounded-xl mb-4 mr-16"
-                  key={index}
-                >
-                  <img
-                    src={Image1}
-                    alt=""
-                    className="w-12 h-12 object-contain "
-                  />
-                  <p className="font-sans text-base text-secondary-foreground rounded-xl p-2 font-semibold bg-secondary">
-                    {item.content}
-                  </p>
+                <li key={index}>
+                  <div className="flex flex-row gap-2 px-4 mt-2   rounded-xl mb-4 mr-12 ">
+                    <img
+                      src={Image1}
+                      alt=""
+                      className="w-12 h-12 object-contain mt-1"
+                    />
+
+                    <img
+                      src={item.content}
+                      className="m-2 w-[300px] bg-secondary rounded-xl"
+                    />
+                  </div>
                 </li>
               );
             })}
           </ul>
-        )}
+        )} */}
 
-        {service === "DALL-E" && ImageQuery && Image && !Loading ? (
+        {/* {service === "DALL-E" && ImageQuery && Image && !Loading ? (
           <div className="flex flex-col gap-1">
             <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] mr-2 min-h-12">
               <p className="font-sans text-base text-primary-foreground font-semibold ">
@@ -204,7 +318,30 @@ const Extension = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
+        {/* {service === "stable-diffusion" && ImageQuery && !Loading && baseUrl ? (
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] mr-2 min-h-12">
+              <p className="font-sans text-base text-primary-foreground font-semibold ">
+                {ImageQuery}
+              </p>
+            </div>
+            <div className="flex flex-row gap-2 px-4 mt-2   rounded-xl mb-4 mr-12 ">
+              <img
+                src={Image1}
+                alt=""
+                className="w-12 h-12 object-contain mt-1"
+              />
+
+              <img
+                src={baseUrl}
+                className="m-2 w-[300px] bg-secondary rounded-xl"
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )} */}
         {!Loading && (
           <Button
             onClick={cancel}
@@ -248,7 +385,7 @@ const Extension = () => {
                 size="icon"
                 variant="secondary"
                 className="w-10 h-10 rounded-full border-primary bg-card hover:border-2"
-                onClick={listen}
+                onClick={toggleListening}
               >
                 <FaMicrophone className="text-card-foreground" />
               </Button>

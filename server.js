@@ -193,8 +193,8 @@ app.post("/completions", async (req, res) => {
         options
       );
       const data = await response.json();
-      console.log(data);
-      res.send(data);
+      console.log(data.images[0]);
+      res.send(data.images);
     } catch (err) {
       console.error(err);
     }
