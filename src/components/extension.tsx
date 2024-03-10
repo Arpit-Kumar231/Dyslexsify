@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IoIosSend } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image1 from "../assests/dyslexi.png";
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
@@ -33,6 +33,9 @@ const Extension = () => {
   const [baseUrl, setbaseUrl] = useState("");
   const [ImageChats, setImageChats] = useState([]);
   const [type, setType] = useState(2);
+  const [fallBack, setFallBack] = useState("");
+  // const renderStop = useRef(true);
+  // const [page, setpage] = useState(false);
 
   const { listen, listening, stop, onResult } = useSpeechRecognition({
     onResult: (result) => {
@@ -59,6 +62,39 @@ const Extension = () => {
   // useEffect(() => {
   //   setText(transcript);
   // }, [transcript]);
+  // useEffect(() => {
+  //   // if (renderStop.current) {
+  //   //   renderStop.current = false;
+  //   // } else {
+  //   console.log("hello");
+  //   fetch("http://localhost:8000/") // Adjust this URL to your API endpoint
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setFallBack(data.text);
+  //     });
+  //   // }
+  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/");
+        const newData = await response.json();
+        setFallBack(newData.text);
+        console.log(newData.text);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Call fetchData() immediately to load data initially
+    fetchData();
+
+    // Set up a timer to call fetchData() every 5 seconds
+    const intervalId = setInterval(fetchData, 1000);
+
+    // Clear the interval on cleanup to avoid memory leaks and multiple timers
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -186,7 +222,7 @@ const Extension = () => {
     }
     setText("");
   };
-  console.log(listen, listening);
+  // console.log(page);
 
   return (
     <div className="flex flex-col mr-10 ">
@@ -350,6 +386,14 @@ const Extension = () => {
             Stop Voice⛔
           </Button>
         )}
+        <Button
+          onClick={() => {
+            setQuery(fallBack);
+          }}
+          className="rounded-xl ml-[140px] mt-4 bg-secondary sticky hover:border-primary border-2"
+        >
+          Summarize Current Page
+        </Button>
 
         {/* {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
