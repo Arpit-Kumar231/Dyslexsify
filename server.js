@@ -4,6 +4,10 @@ import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(express.json({ limit: "10mb", extended: true }));
+app.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 
 app.use(cors());
 
@@ -203,7 +207,7 @@ app.post("/completions", async (req, res) => {
   }
 });
 app.post("/", (req, res) => {
-  let textData = req.body.text; // Store the received text
+  textData = req.body.text; // Store the received text
   console.log("Received text: ", textData);
   return res
     .status(200)
