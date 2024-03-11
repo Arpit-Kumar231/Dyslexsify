@@ -20,16 +20,7 @@
       "matches": ["<all_urls>"]
     }
   ],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"]
-    }
-  ],
-  "icons": {
-    "48": "assets/dyslexi-DJAcG6d0.png",
-    "128": "assets/dyslexi-DJAcG6d0.png"
-  },
+
   "action": {
     "default_icon": {
       "16": "assets/dyslexi-DJAcG6d0.png",
