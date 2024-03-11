@@ -216,7 +216,7 @@ const Extension = () => {
                 className="flex flex-row gap-4 px-4 mt-2 items-center bg-primary mx-2 rounded-xl mb-4  ml-[102px] min-h-12 mr-2"
                 key={index}
               >
-                <p className="font-ABeeZee text-base font-semibold text-primary-foreground ">
+                <p className="font-ABeeZee text-base font-semibold text-primary-foreground max-w-[300px]">
                   {item.content}
                 </p>
               </li>
@@ -245,11 +245,17 @@ const Extension = () => {
           })}
         </ul>
         {Loading ? (
-          <div className="flex items-center space-x-4 mt-5 ml-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
+          <div>
             <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px]" />
-              <Skeleton className="h-4 w-[200px]" />
+              <Skeleton className="h-8 w-[250px] ml-[190px] rounded-lg  " />
+            </div>
+
+            <div className="flex items-center space-x-4 mt-5 ml-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px] rounded-lg" />
+                <Skeleton className="h-4 w-[200px] rounded-lg" />
+              </div>
             </div>
           </div>
         ) : (
