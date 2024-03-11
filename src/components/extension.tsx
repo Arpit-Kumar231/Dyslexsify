@@ -176,26 +176,6 @@ const Extension = () => {
       ]);
     }
   }, [message]);
-  useEffect(() => {
-    if (
-      service === "DALL-E" ||
-      (service === "stable-diffusion" && (Image != null || baseUrl != null))
-    ) {
-      setChats([
-        ...Chats,
-        { type: "image", role: "user", content: ImageQuery },
-        {
-          type: "image",
-          role: "answer",
-          content: service === "DALL-E" ? Image : baseUrl,
-        },
-      ]);
-    }
-  }, [Image, baseUrl]);
-  useEffect(() => {
-    const selectedVoice = voices[type];
-    if (message != null) speak({ text: message.content, voice: selectedVoice });
-  }, [message]);
 
   // if (!browserSupportsSpeechRecognition) {
   //   return <span>Browser doesn't support speech recognition.</span>;
@@ -392,14 +372,16 @@ const Extension = () => {
             Stop Voice⛔
           </Button>
         )}
-        <Button
-          onClick={() => {
-            setQuery(fallBack);
-          }}
-          className="rounded-xl ml-[140px] mt-4 bg-secondary sticky hover:border-primary border-2"
-        >
-          Summarize Current Page
-        </Button>
+        {!Loading && (
+          <Button
+            onClick={() => {
+              setQuery(fallBack);
+            }}
+            className="rounded-xl ml-[140px] mt-4 bg-secondary sticky hover:border-primary border-2"
+          >
+            Summarize Current Page
+          </Button>
+        )}
 
         {/* {Query && (
           <div className="flex flex-row gap-4 px-4 mt-2 items-center bg-green-600 mx-2 rounded-xl mb-4">
