@@ -4,6 +4,11 @@ import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(express.json({ limit: "10mb", extended: true }));
+app.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
+
 app.use(cors());
 
 const API_KEY2 = "tune-de592e91-eb27-422e-a502-9fe21b329e471709284355";
@@ -11,6 +16,7 @@ const API_KEY = "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";
 const API_KEY3 = "tune-cf938e0a-fa05-4de6-9255-9431d21056e91709285403";
 const API_KEY4 = "tune-4c4549ed-b198-4556-bb82-850cd6b715bb1709380750";
 const API_KEY5 = "f99eD2qtXQWB15ZhWi4g2NZy59jCf3TX";
+let textData = "";
 
 app.post("/completions", async (req, res) => {
   if (req.body.service === "ChatGPT") {
@@ -199,6 +205,16 @@ app.post("/completions", async (req, res) => {
       console.error(err);
     }
   }
+});
+app.post("/", (req, res) => {
+  textData = req.body.text; // Store the received text
+  console.log("Received text: ", textData);
+  return res
+    .status(200)
+    .json({ message: "Data received successfully", textData: textData });
+});
+app.get("/", (req, res) => {
+  return res.status(200).json({ text: textData });
 });
 
 app.listen(PORT, () => {
