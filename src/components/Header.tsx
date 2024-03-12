@@ -3,7 +3,17 @@ import Image from "../assests/dyslexi.png";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const Header = ({ ser }) => {
+const Header = ({ service, setService, type, setType, speak, voices }) => {
+  const firstUpdate = useRef(true);
+  const selectedVoice = voices[type];
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+    } else {
+      speak({ text: service, voice: selectedVoice });
+    }
+  }, [service]);
+
   return (
     <div className="flex justify-between w-[450px]   bg-card p-1  items-center ">
       <div className="flex flex-row items-center gap-2">

@@ -176,6 +176,26 @@ const Extension = () => {
       ]);
     }
   }, [message]);
+  useEffect(() => {
+    if (
+      service === "DALL-E" ||
+      (service === "stable-diffusion" && (Image != null || baseUrl != null))
+    ) {
+      setChats([
+        ...Chats,
+        { type: "image", role: "user", content: ImageQuery },
+        {
+          type: "image",
+          role: "answer",
+          content: service === "DALL-E" ? Image : baseUrl,
+        },
+      ]);
+    }
+  }, [Image, baseUrl]);
+  useEffect(() => {
+    const selectedVoice = voices[type];
+    if (message != null) speak({ text: message.content, voice: selectedVoice });
+  }, [message]);
 
   // if (!browserSupportsSpeechRecognition) {
   //   return <span>Browser doesn't support speech recognition.</span>;
