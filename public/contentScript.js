@@ -25,6 +25,10 @@ function checkURLChange() {
     sendDataToServer(allText); // Send data to the server
   }
 }
+window.addEventListener("focus", function () {
+  const allText = document.body.innerText; // Grab all text on the new page/current state
+  sendDataToServer(allText);
+});
 
 // Send initial data
 sendDataToServer(document.body.innerText);
