@@ -18,6 +18,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors());
+// add your own api keys
 
 const API_KEY2 = "tune-de592e91-eb27-422e-a502-9fe21b329e471709284355";
 const API_KEY = "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";
