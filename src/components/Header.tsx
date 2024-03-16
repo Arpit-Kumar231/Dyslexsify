@@ -33,6 +33,7 @@ const Header = ({ service, setService, type, setType, speak, voices }) => {
           <option value="Code-Llama">Code-Llama</option>
           <option value="DALL-E">DALL-E</option>
           <option value="stable-diffusion">Stable-diffusion</option>
+          <option value="DreamShaper">DreamShaper</option>
         </select>
         <select
           value={type}
