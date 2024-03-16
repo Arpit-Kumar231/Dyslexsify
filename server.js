@@ -18,12 +18,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors());
+// add your own api keys
 
-const API_KEY2 = "tune-de592e91-eb27-422e-a502-9fe21b329e471709284355";
-const API_KEY = "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";
-const API_KEY3 = "tune-cf938e0a-fa05-4de6-9255-9431d21056e91709285403";
-const API_KEY4 = "tune-4c4549ed-b198-4556-bb82-850cd6b715bb1709380750";
-const API_KEY5 = "f99eD2qtXQWB15ZhWi4g2NZy59jCf3TX";
 let textData = "";
 
 app.post("/completions", async (req, res) => {
