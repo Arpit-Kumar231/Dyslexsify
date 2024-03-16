@@ -39,7 +39,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} simplify`,
+            content: `${req.body.message}`,
           },
         ],
         max_tokens: 500,
@@ -68,7 +68,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} summarize and simplify under 40 words`,
+            content: `${req.body.message} summarize and simplify under 40 words `,
           },
         ],
         max_tokens: 500,
@@ -80,6 +80,13 @@ app.post("/completions", async (req, res) => {
         options
       );
       const data = await response.json();
+
+      // const data2 = {choices : [{mes}]}
+      // if (set === "hi") {
+      //   res.send(
+      //     "Hello , Dyslexify AI here your friendly neighbourhood dyslexic assistant"
+      //   );
+      // }
       res.send(data);
     } catch (err) {
       console.error(err);
@@ -97,7 +104,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} `,
+            content: `${req.body.message}  `,
           },
         ],
         max_tokens: 500,
@@ -121,7 +128,12 @@ app.post("/completions", async (req, res) => {
         method: "POST",
         body: JSON.stringify({
           model: "Phind/Phind-CodeLlama-34B-v2",
-          messages: [{ role: "user", content: req.body.message }],
+          messages: [
+            {
+              role: "user",
+              content: `${req.body.message} `,
+            },
+          ],
           max_tokens: 500,
         }),
         headers: {
@@ -145,7 +157,7 @@ app.post("/completions", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: `${req.body.message} `,
+            content: `${req.body.message}  `,
           },
         ],
         max_tokens: 500,
@@ -204,6 +216,30 @@ app.post("/completions", async (req, res) => {
     try {
       const response = await fetch(
         "https://api.deepinfra.com/v1/inference/stabilityai/stable-diffusion-2-1",
+        options
+      );
+      const data = await response.json();
+      console.log(data.images[0]);
+      res.send(data.images);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  if (req.body.service === "DreamShaper") {
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${API_KEY5}`,
+        "Content-Type": "application/json",
+        "User-Agent": "Chrome",
+      },
+      body: JSON.stringify({
+        prompt: `${req.body.message} `,
+      }),
+    };
+    try {
+      const response = await fetch(
+        "https://api.deepinfra.com/v1/inference/Lykon/DreamShaper",
         options
       );
       const data = await response.json();

@@ -23,7 +23,7 @@ const Extension = () => {
   const [text, setText] = useState("");
   const [Chats, setChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState([]);
-  const [service, setService] = useState("Mistral");
+  const [service, setService] = useState("ChatGPT");
   const { speak, cancel, voices } = useSpeechSynthesis();
   const [Image, setImage] = useState("");
   const [Loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ const Extension = () => {
   const [ImageChats, setImageChats] = useState([]);
   const [type, setType] = useState(2);
   const [fallBack, setFallBack] = useState("");
+  const [language, setlanguage] = useState("English");
   // const renderStop = useRef(true);
   // const [page, setpage] = useState(false);
 
@@ -102,7 +103,8 @@ const Extension = () => {
         method: "POST",
         body: JSON.stringify({
           message: Query,
-          service: service, // You need to define Query before using it here
+          service: service,
+          language: language, // You need to define Query before using it here
         }),
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +129,7 @@ const Extension = () => {
           console.error(err);
         }
       }
-      if (service === "stable-diffusion") {
+      if (service === "stable-diffusion" || service === "DreamShaper") {
         try {
           setLoading(true);
           const response = await fetch(
@@ -154,6 +156,7 @@ const Extension = () => {
           );
           const data = await response.json();
           setLoading(false);
+
           setMessage(data.choices[0].message);
 
           console.log(data);
@@ -179,7 +182,8 @@ const Extension = () => {
   useEffect(() => {
     if (
       service === "DALL-E" ||
-      (service === "stable-diffusion" && (Image != null || baseUrl != null))
+      service === "stable-diffusion" ||
+      (service === "DreamShaper" && (Image != null || baseUrl != null))
     ) {
       setChats([
         ...Chats,
@@ -217,7 +221,11 @@ const Extension = () => {
   };
   const HandleClick = () => {
     setQuery(text);
-    if (service === "DALL-E" || service === "stable-diffusion") {
+    if (
+      service === "DALL-E" ||
+      service === "stable-diffusion" ||
+      service === "DreamShaper"
+    ) {
       setImageQuery(text);
     }
     setText("");
@@ -267,7 +275,7 @@ const Extension = () => {
                   className="w-12 h-12 object-contain "
                 />
                 {item.type === "chat" ? (
-                  <p className="font-sans text-base text-secondary-foreground rounded-xl p-2 font-semibold bg-secondary">
+                  <p className="font-sans text-base text-secondary-foreground rounded-xl p-2 font-semibold bg-background">
                     {item.content}
                   </p>
                 ) : (
@@ -387,7 +395,7 @@ const Extension = () => {
         {!Loading && (
           <Button
             onClick={cancel}
-            className="rounded-xl ml-[175px] mt-4 bg-secondary sticky hover:border-primary border-2"
+            className="rounded-xl ml-[175px] mt-4 bg-primary sticky  border-2"
           >
             Stop Voice⛔
           </Button>
@@ -397,7 +405,7 @@ const Extension = () => {
             onClick={() => {
               setQuery(fallBack);
             }}
-            className="rounded-xl ml-[140px] mt-4 bg-secondary sticky hover:border-primary border-2"
+            className="rounded-xl ml-[140px] mt-4 bg-primary sticky  border-2 mb-2"
           >
             Summarize Current Page
           </Button>
@@ -441,6 +449,20 @@ const Extension = () => {
               >
                 <FaMicrophone className="text-card-foreground" />
               </Button>
+              {/* <select
+                value={language}
+                onChange={(e) => setlanguage(e.target.value)}
+                className="bg-card text-Hanken text-secondary-foreground font-ABeeZee rounded-xl font-semibold w-[70px]"
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Dutch">Dutch</option>
+                <option value="French">French</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Chinese">Chinese</option>
+                <option value="German">German</option>
+              </select> */}
             </div>
 
             <Button
