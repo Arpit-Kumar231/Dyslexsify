@@ -1,11 +1,11 @@
 # Dyslexify AI - a Chrome extension for dyslexic people
 
 ![WhatsApp Image 2024-03-18 at 10 51 54](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/a86e9326-5f74-453f-a303-b8d08c0787e9)
-This extension has multiple features :
+## This extension has multiple features :
 ### Text to Voice output
 ### Full Webpage summarization
 ### Youtube Summarization
-### 6 Text Models(GPT-3,Mistral,Gemma,Code-Llama,openhermes,chrono-hermes
+### 6 Text Models(GPT-3,Mistral,Gemma,Code-Llama,openhermes,chrono-hermes)
 ### 3 Image models(DALL-E,Stable-Diffusion,Dream Shaper)
 ### 7 Customisable Voices
 
@@ -16,7 +16,7 @@ This extension has multiple features :
 ## Image Models
 ![WhatsApp Image 2024-03-18 at 10 51 54](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/3e065576-b562-45b5-8e18-8c14372450b8)
 
-## Youtube Summariztion
+## Youtube Summarization
 ![WhatsApp Image 2024-03-18 at 10 55 22](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/c6b5db46-cdce-4a34-ac54-343c90209148)
 
 ## Extension with a different theme
