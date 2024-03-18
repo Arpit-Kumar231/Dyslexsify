@@ -31,6 +31,7 @@ const Header = ({ service, setService, type, setType, speak, voices }) => {
           <option value="Gemma">Gemma</option>
           <option value="openhermes-2-5-m7b-4k">openhermes-2-5-m7b-4k</option>
           <option value="Code-Llama">Code-Llama</option>
+          <option value="Chrono-Hermes">Chrono-Hermes</option>
           <option value="DALL-E">DALL-E</option>
           <option value="stable-diffusion">Stable-diffusion</option>
           <option value="DreamShaper">DreamShaper</option>
