@@ -1,4 +1,4 @@
-# Dyslexify AI
+![WhatsApp Image 2024-03-18 at 10 51 54](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/a86e9326-5f74-453f-a303-b8d08c0787e9)# Dyslexify AI
 This extension has multiple features :
 1)Text to Voice output
 2)Full Webpage summarization
@@ -8,7 +8,7 @@ This extension has multiple features :
 6)7 Customisable Voices
 
 
-##Full Webpage Summarization
+## Full Webpage Summarization
 ![WhatsApp Image 2024-03-18 at 10 51 53](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/9c2247fa-d214-43de-9007-3fa7ced876e2)
 
 ## Image Models
@@ -21,6 +21,19 @@ This extension has multiple features :
 ![Screenshot 2024-03-18 232411](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/6cc79cf2-45f8-4d20-97d9-ccf2202a4c1d)
 
 ## Seven Different voices
+![WhatsApp Image 2024-03-18 at 10 55 22(2)](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/83edaadd-3f2f-4cba-8b2e-2a363358daa1)
+
+## Text models
+
+![Screenshot 2024-03-19 004842](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/58970d11-166c-4fe1-b146-329c285e405a)
+
+## Some more images
+![Screenshot 2024-03-19 005441](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/105e5a6e-5471-48d0-8c7f-802bdddaf110)
+
+
+
+
+![Screenshot 2024-03-19 005715](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/1d6d5aad-d0c0-4828-91c1-ddc07549e243)
 
 
 
