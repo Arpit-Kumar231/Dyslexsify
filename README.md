@@ -2,12 +2,12 @@
 
 ![WhatsApp Image 2024-03-18 at 10 51 54](https://github.com/Arpit-Kumar231/Dyslexsify/assets/142097093/a86e9326-5f74-453f-a303-b8d08c0787e9)
 This extension has multiple features :
-1)Text to Voice output//
-2)Full Webpage summarization
-3)Youtube Summarization
-4)6 Text Models(GPT-3,Mistral,Gemma,Code-Llama,openhermes,chrono-hermes
-5)3 Image models(DALL-E,Stable-Diffusion,Dream Shaper)
-6)7 Customisable Voices
+### Text to Voice output
+### Full Webpage summarization
+### Youtube Summarization
+### 6 Text Models(GPT-3,Mistral,Gemma,Code-Llama,openhermes,chrono-hermes
+### 3 Image models(DALL-E,Stable-Diffusion,Dream Shaper)
+### 7 Customisable Voices
 
 
 ## Full Webpage Summarization
